@@ -27,7 +27,7 @@ app.use(express.json({ type: 'application/json' }));
 
 //Database Connection
 mongoose.set('strictQuery', false);
-mongoose.connect(process.env.DATABASE_URL as string);
+mongoose.connect(process.env.MONGODB_URL as string);
 const db = mongoose.connection;
 db.on('error', (err) => console.error(err));
 db.once('open', () => {
