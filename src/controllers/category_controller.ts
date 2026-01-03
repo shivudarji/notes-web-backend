@@ -10,9 +10,6 @@ import { isValidRequest } from "../common/request_validator";
 import { InternalServerError } from "../common/status";
 import { response } from "../common/response";
 
-// ========================
-//        SIGNUP
-// ========================
 const addCategoryValidation = [
        check('category')
         .notEmpty()
@@ -56,9 +53,7 @@ const addCategory = async (req: Request, res: Response) => {
     return res.status(500).json({ msg: "Server error", err });
   }
 };
-// controllers/categoryController.js
 
-// ➤ Get All Categories
 export const getCategory = async (req: Request, res: Response) => {
   try {
     const categories = await Category.find().sort({ createdAt: -1 });
@@ -82,18 +77,6 @@ const patchCategory = async (req: Request, res: Response) => {
   console.warn('category id',req.params.id)
 
    try {
-    //    const exists = await Category.findOne({
-    //     category: req.body.category,
-    //        _id: { $ne: req.params.id }
-    //  });
-
-    //   if (exists) {
-    //        return res.status(409).json({
-    //               success: false,
-    //                message: "Another note already exists with this category"
-    //          });
-    //   }
-
      const updatedCategory = await Category.findByIdAndUpdate(req.params.id, req.body, {
          new: true,
          runValidators: true

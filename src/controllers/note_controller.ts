@@ -11,9 +11,6 @@ import { cleanObject } from "../utils/helper/object_helper";
 import { InternalServerError } from "../common/status";
 import { setDefaultResultOrder } from "node:dns";
 
-// ========================
-//        SIGNUP
-// ========================
 const addNoteValidation = [
      check('title')
         .notEmpty()
@@ -41,12 +38,9 @@ const deleteNoteValidation = [
 const addNote = async (req: Request, res: Response) => {
   try {
     const { title, category, description } = req.body;
-    // Validate required fields
     if (!title || !category || !description) {
       return res.status(400).json({ msg: "All fields are required" });
-    }
-
- 
+    } 
     // Create user
     const note = new Note({
       title,
