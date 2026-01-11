@@ -30,11 +30,12 @@ user:Types.ObjectId;
 // 2. Create a Schema corresponding to the document interface.
 const profileSchema = new Schema<IProfile>({
    
-   user: {
-      type:Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+    unique: true, // ✅ correct uniqueness
+  },
   firstName: {
     type: String,
     trim: true,
