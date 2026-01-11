@@ -60,7 +60,7 @@ const patchProfile = async (req: AuthRequest, res: Response)  => {
         new: true,              // return updated document
         upsert: true            // create if not exists
       }
-    );
+    ).populate("user", "email").lean();
     return res.status(200).json({
       success: true,
       message: "Profile updated successfully",
@@ -85,7 +85,7 @@ if (!isValidRequest(req, res)) {
 
     // ✅ find profile by userId
     const profile = await Profile.findOne({ user: userId })
-    .populate("user", "email"); // only email comes from User
+    .populate("user", "email").lean(); // only email comes from User
 
 if (!profile) {
       return res.status(404).json({ message: "Profile not found" });
