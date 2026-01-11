@@ -84,7 +84,7 @@ if (!isValidRequest(req, res)) {
      const userId = new Types.ObjectId(req.user.id);
 
     // ✅ find profile by userId
-    const profile = await Profile.findOne({ userId })
+    const profile = await Profile.findOne({ user: userId })
       .populate("user", "firstName lastName email");
 if (!profile) {
       return res.status(404).json({ message: "Profile not found" });
