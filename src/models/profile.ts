@@ -7,7 +7,7 @@ import CountrySlug from '../utils/enum/country_slug';
 
 export interface IProfile extends Document {
 //   id: string;
-userId:Types.ObjectId;
+user:Types.ObjectId;
   firstName: string;
    lastName:  string;
   email:Types.ObjectId;
@@ -30,13 +30,11 @@ userId:Types.ObjectId;
 // 2. Create a Schema corresponding to the document interface.
 const profileSchema = new Schema<IProfile>({
    
-  userId: {
-    type: Schema.Types.ObjectId,
-      // required: true,
-      ref: "User",
-       required: true,
-    unique: true
-  },
+   user: {
+      type:Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
   firstName: {
     type: String,
     trim: true,

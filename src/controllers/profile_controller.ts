@@ -41,7 +41,7 @@ const patchProfile = async (req: AuthRequest, res: Response)  => {
 
     // ✅ Update or Create profile (UPSERT)
     const profile = await Profile.findOneAndUpdate(
-      { userId },              // find by userId
+      { user: userId },              // find by userId
       {
         $set: {
           firstName,
@@ -65,8 +65,8 @@ const patchProfile = async (req: AuthRequest, res: Response)  => {
       success: true,
       message: "Profile updated successfully",
      
-      data: {userId : profile},
-    });
+     data: profile,
+  });
   } catch (error: any) {
     return res.status(500).json({
       success: false,
@@ -85,8 +85,8 @@ if (!isValidRequest(req, res)) {
 
     // ✅ find profile by userId
     const profile = await Profile.findOne({ userId })
-      .populate("userId", "firstName lastName email"); 
-    if (!profile) {
+      .populate("user", "firstName lastName email");
+if (!profile) {
       return res.status(404).json({ message: "Profile not found" });
     }
 

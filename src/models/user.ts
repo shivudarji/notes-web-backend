@@ -6,12 +6,12 @@ import Gender from '../utils/enum/gender_slug';
 import CountrySlug from '../utils/enum/country_slug';
 
 export interface IUser extends Document {
-  userId:string;
   firstName: string;
   lastName: string;
   email: string;
    password: string;
   cpswd: string;
+  profile:Types.ObjectId;
 //    role: Array<PopulatedDoc<Document<Types.ObjectId> & IRole>>;
 //   hobbies:  HobbiesSlug;
 //    gender: Gender;
@@ -30,11 +30,7 @@ export interface IUser extends Document {
 
 // 2. Create a Schema corresponding to the document interface.
 const userSchema = new Schema<IUser>({
-  userId: {
-    type: String,
-    trim: true,
-    default:null,
-  },
+  
   firstName: {
     type: String,
     trim: true,
@@ -57,6 +53,11 @@ const userSchema = new Schema<IUser>({
     default: null,
      required: true,
   },
+    // 🔗 Profile reference
+    profile: {
+      type: Schema.Types.ObjectId,
+      ref: 'Profile',
+    },
   //   hobbies: {
   //     trim: true,
   //     type: String,

@@ -79,12 +79,13 @@ const signup = async (req: Request, res: Response) => {
       password: hashed,
       cpswd: hashed, // OPTIONAL: can remove if not storing
     });
+        await user.save();
+
        // 2️⃣ Create empty profile
      await Profile.create({
-         userId: user._id
+         user: user._id
       });
 
-    await user.save();
 
     return res.status(201).json({ msg: "Signup successful", user });
   } catch (err) {
