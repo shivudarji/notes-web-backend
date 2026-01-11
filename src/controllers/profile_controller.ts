@@ -85,14 +85,23 @@ if (!isValidRequest(req, res)) {
 
     // ✅ find profile by userId
     const profile = await Profile.findOne({ user: userId })
-      .populate("user", "firstName lastName email");
+    .populate("user", "email"); // only email comes from User
+
 if (!profile) {
       return res.status(404).json({ message: "Profile not found" });
     }
-
+     // 🔹 Inject firstName and lastName from profile into user object
+ const profileData = {
+  ...profile,
+  user: {
+    ...profile.user,
+    firstName: profile.firstName,
+    lastName: profile.lastName,
+  },
+};
     return res.status(200).json({
       success: true,
-      data: profile,
+      data: profileData,
     });
   } catch (e: any) {
     return res.status(InternalServerError).json(response(false, e.message));
