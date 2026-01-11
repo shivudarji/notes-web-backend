@@ -60,13 +60,29 @@ const patchProfile = async (req: AuthRequest, res: Response)  => {
         new: true,              // return updated document
         upsert: true            // create if not exists
       }
-    ).populate("user", "email").lean();
+    ) .populate("user", "email") // get user email only
+    .lean();
+
+       if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+
+    // Merge names into user object for frontend
+    const profileData = {
+      ...profile,
+      user: {
+        ...profile.user,
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+      },
+    };
+  
     return res.status(200).json({
-      success: true,
+       success: true,
       message: "Profile updated successfully",
-     
-     data: profile,
-  });
+      data: profileData,
+    });
+  
   } catch (error: any) {
     return res.status(500).json({
       success: false,
@@ -85,23 +101,14 @@ if (!isValidRequest(req, res)) {
 
     // ✅ find profile by userId
     const profile = await Profile.findOne({ user: userId })
-    .populate("user", "email").lean(); // only email comes from User
-
+      .populate("user", "firstName lastName email");
 if (!profile) {
       return res.status(404).json({ message: "Profile not found" });
     }
-     // 🔹 Inject firstName and lastName from profile into user object
- const profileData = {
-  ...profile,
-  user: {
-    ...profile.user,
-    firstName: profile.firstName,
-    lastName: profile.lastName,
-  },
-};
+
     return res.status(200).json({
       success: true,
-      data: profileData,
+      data: profile,
     });
   } catch (e: any) {
     return res.status(InternalServerError).json(response(false, e.message));
